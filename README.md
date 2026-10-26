@@ -6,7 +6,14 @@
 
 <p align="center">
   <b>GenAI Celebration &amp; Event Planner</b><br>
-  Budgets, timelines, vendor checklists and personalised ideas for weddings, birthdays and community events.
+  Budgets, timelines, vendor checklists and personalised ideas for weddings, birthdays and community events.<br>
+  <br>
+  <a href="https://jashn-snowy.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/Live_Demo-jashn--snowy.vercel.app-2E2A7A?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo on Vercel">
+  </a>
+  <a href="https://github.com/shoaibkhan-sde/Jashn/actions/workflows/ci.yml" target="_blank">
+    <img src="https://img.shields.io/github/actions/workflow/status/shoaibkhan-sde/Jashn/ci.yml?branch=main&style=for-the-badge&logo=github&label=CI%20Status" alt="CI Status">
+  </a>
 </p>
 
 <br>
