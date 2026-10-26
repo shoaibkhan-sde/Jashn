@@ -1,60 +1,21 @@
-# 🪔 Jashn (जश्न) — GenAI Celebration & Event Planner
+<p align="center">
+  <img src="public/icon.svg" alt="Jashn icon" width="96">
+</p>
+
+<h1 align="center">Jashn</h1>
+
+<p align="center">
+  <b>GenAI Celebration &amp; Event Planner</b><br>
+  Budgets, timelines, vendor checklists and personalised ideas for weddings, birthdays and community events.
+</p>
+
+<br>
 
 > **"One planner for every celebration."**  
 > An AI-powered, mathematically exact celebration and event planning suite for Indian weddings, birthdays, community festivals, and society gatherings in **English** (with Indian currency formatting and cultural celebration nuances).
 
----
+<img src="https://raw.githubusercontent.com/shoaibkhan-sde/Jashn/main/public/home.png" alt="Jashn Home Page" width="100%">
 
-## 🏆 Evaluation Criteria Scorecard
-
-| Evaluation Criterion | Requirement | Implementation in Jashn | Status |
-|---|---|---|:---:|
-| **Pure Domain Logic** | `src/domain`: Zero I/O, no UI/AI imports, 95%+ coverage | Pure math in `budget.ts`, `timeline.ts`, `vendors.ts`, `guests.ts`, `scenarios.ts`. **99.6% Line coverage**, 63 unit tests. | ✅ **Exceeds** (99.6%) |
-| **Mathematical Precision** | AI must never compute totals; exact summation guaranteed | Parameter extraction only (`cutPercentage`, `lockedCategories`). Sum of categories $\equiv$ total budget with 0 float drift. | ✅ **Strict Invariant** |
-| **AI Reliability & Failover** | Gemini API (`@google/genai`) with ordered failover & cooldowns | Automatic chain: `gemini-2.5-flash` → `gemini-1.5-flash` → `gemini-1.5-pro` with 60s cooldowns on 429/503. | ✅ **Complete** |
-| **Prompt Injection Defense** | Input sanitization, delimiters, length limits | Strict delimiters, regex pattern blocklist, Zod schema validation, control-char stripping in `src/ai/security.ts`. | ✅ **Complete** |
-| **Deterministic Offline Mode** | Full feature operation without an API key | Built-in deterministic rule engine in `src/ai/fallback.ts`. All answers transparently labeled (`gemini` vs `built-in`). | ✅ **Complete** |
-| **Modular File Limits** | No file over ~200 lines, pass dependencies in | All 38 source files verified: maximum file length is 198 lines (`plannerStore.ts`). | ✅ **100% Compliant** |
-| **Security & Headers** | Strict CSP, rate limiting, body size limits, no `dangerouslySetInnerHTML` | Next.js CSP, HSTS, `X-Frame-Options: DENY`, 50KB body limit, 30 req/min sliding window rate limiter. Zero `dangerouslySetInnerHTML`. | ✅ **Hardened** |
-| **UI Design Fidelity** | `Main.dc` festive celebration design | Deep Indigo (`#2E2A7A`), Marigold Gold (`#F5A524`), swaying bunting garland, floating bubbles, orbital countdown ring, ticker marquee. | ✅ **Pixel Perfect** |
-| **Language & Locale** | English (Dedicated focus) | Clean single-language English interface, Indian currency notation (`₹18,00,000`, `₹3,95,000`), localized Indian celebration dates. | ✅ **Complete** |
-| **Accessibility (A11y)** | WCAG 2.1 AA, keyboard navigation, light/dark, reduced-motion | Full keyboard roving tabIndex, axe-core automated audits (0 violations), `prefers-reduced-motion` safety. | ✅ **WCAG AA Clean** |
-| **Comprehensive Tests** | Unit tests, Playwright E2E, axe-core scans | 63 Vitest tests (99.6% coverage), 10 Playwright E2E & Axe accessibility browser tests. | ✅ **100% Passing** |
-
----
-
-## 📸 Visual Design & Highlights (Main.dc Direction)
-
-```
-┌──────────────────────────────────────────────────────────────────────────────────┐
-│  [Logo] Jashn               Overview  Scenarios  [🌙] [Start a new plan]                │
-├──────────────────────────────────────────────────────────────────────────────────┤
-│  🚩 🚩 🚩 🚩 🚩 🚩  FESTIVE BUNTING SWAY GARLAND  🚩 🚩 🚩 🚩 🚩 🚩                 │
-│  One planner for every celebration                                               │
-│  Plan your next [wedding / birthday / festival / reunion]                        │
-│  [ Wedding ] [ Birthday ] [ Community ] [ Festival ]         ╭─────────────╮    │
-│  [ Start a new plan ] [ Try a sample plan ]                   │ 118 days to │    │
-│                                                               │     go      │    │
-│                                                               ╰─────────────╯    │
-├──────────────────────────────────────────────────────────────────────────────────┤
-│  ⚡ Weddings · Birthdays · Baby showers · Society festivals · Community events · ⚡ │
-├──────────────────────────────────────────────────────────────────────────────────┤
-│  Priya & Arjun’s Wedding                                                         │
-│  Sat, 20 Feb 2027 · 220 guests · Nanded, Maharashtra · 118 days to go            │
-│  [ Add to calendar (.ics) ] [ Export PDF ] [ Share plan ]                        │
-│  ─────────────────────────────────────────────────────────────────────────────── │
-│  [Overview]  [Budget]  [Timeline]  [Vendors]  [Guests]  [Ideas]  [Scenarios]     │
-│                                                                                  │
-│  ┌─ Budget (₹3,95,000 of ₹18,00,000) ──┐ ┌─ Planner Assistant (Gemini) ────────┐ │
-│  │ Venue:        ██████████  ₹2,25k/450k│ │ User: Cut 10% but keep photographer│ │
-│  │ Catering:     ████░░░░░░  ₹1,00k/540k│ │ Recalculated by planner engine:     │ │
-│  │ Decor:        ░░░░░░░░░░  ₹0 / ₹216k │ │ Total: ₹18,00,000 → ₹16,20,000     │ │
-│  │ Photography:  ██████░░░░  ₹50k / ₹162│ │ [ Apply changes ] [ Compare ]      │ │
-│  └──────────────────────────────────────┘ └────────────────────────────────────┘ │
-└──────────────────────────────────────────────────────────────────────────────────┘
-```
-
----
 
 ## 🛠️ Technology Stack
 
