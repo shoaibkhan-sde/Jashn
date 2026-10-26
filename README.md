@@ -82,12 +82,12 @@ npm run build
 
 ## 📚 Architectural & Operational Documentation
 
-- [`ARCHITECTURE.md`](./ARCHITECTURE.md) — Hexagonal domain isolation, math integrity invariant, and failover design.
-- [`SECURITY.md`](./SECURITY.md) — CSP headers, prompt injection defenses, rate limiting, and zero-XSS guarantee.
-- [`AI_DESIGN.md`](./AI_DESIGN.md) — AI reasoning architecture, structured Zod function calling, and deterministic engine.
-- [`TESTING.md`](./TESTING.md) — Coverage metrics, unit tests, Playwright E2E, and axe-core audit results.
-- [`ACCESSIBILITY.md`](./ACCESSIBILITY.md) — WCAG 2.1 AA checklist, keyboard maps, color contrast, and reduced motion.
-- [`DEPLOYMENT.md`](./DEPLOYMENT.md) — Vercel 1-click deployment, Docker configuration, and production benchmarks.
+- [`ARCHITECTURE.md`](./docs/ARCHITECTURE.md) — Hexagonal domain isolation, math integrity invariant, and failover design.
+- [`SECURITY.md`](./docs/SECURITY.md) — CSP headers, prompt injection defenses, rate limiting, and zero-XSS guarantee.
+- [`AI_DESIGN.md`](./docs/AI_DESIGN.md) — AI reasoning architecture, structured Zod function calling, and deterministic engine.
+- [`TESTING.md`](./docs/TESTING.md) — Coverage metrics, unit tests, Playwright E2E, and axe-core audit results.
+- [`ACCESSIBILITY.md`](./docs/ACCESSIBILITY.md) — WCAG 2.1 AA checklist, keyboard maps, color contrast, and reduced motion.
+- [`DEPLOYMENT.md`](./docs/DEPLOYMENT.md) — Vercel 1-click deployment, Docker configuration, and production benchmarks.
 
 ---
 
