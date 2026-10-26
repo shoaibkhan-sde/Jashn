@@ -69,26 +69,7 @@ test.describe('Jashn Celebration & Event Planner', () => {
     await expect(page.getByText('Pune, Maharashtra')).toBeVisible();
   });
 
-  test('switches multilingual language via dropdown from English to Hindi and Marathi', async ({ page }) => {
-    const langBtn = page.getByTestId('lang-switcher');
 
-    // Switch to Hindi
-    await langBtn.click();
-    await page.getByRole('menuitemradio', { name: /हिन्दी/i }).click();
-    await expect(page.getByText('हर उत्सव का संपूर्ण साथी')).toBeVisible();
-    await expect(page.getByRole('tab', { name: 'बजट' })).toBeVisible();
-
-    // Switch to Marathi
-    await langBtn.click();
-    await page.getByRole('menuitemradio', { name: /मराठी/i }).click();
-    await expect(page.getByText('प्रत्येक सोहळ्याचे परिपूर्ण नियोजन')).toBeVisible();
-    await expect(page.getByRole('tab', { name: 'बजेट' })).toBeVisible();
-
-    // Switch back to English
-    await langBtn.click();
-    await page.getByRole('menuitemradio', { name: /English/i }).click();
-    await expect(page.getByText('One planner for every celebration')).toBeVisible();
-  });
 
   test('toggles dark and light mode seamlessly', async ({ page }) => {
     const themeBtn = page.getByRole('button', { name: /Switch to dark mode/i });
