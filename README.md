@@ -1,7 +1,7 @@
 # 🪔 Jashn (जश्न) — GenAI Celebration & Event Planner
 
 > **"One planner for every celebration."**  
-> An AI-powered, mathematically exact celebration and event planning suite for Indian weddings, birthdays, community festivals, and society gatherings in **English, हिन्दी (Hindi), and मराठी (Marathi)**.
+> An AI-powered, mathematically exact celebration and event planning suite for Indian weddings, birthdays, community festivals, and society gatherings in **English** (with Indian currency formatting and cultural celebration nuances).
 
 ---
 
@@ -17,7 +17,7 @@
 | **Modular File Limits** | No file over ~200 lines, pass dependencies in | All 38 source files verified: maximum file length is 198 lines (`plannerStore.ts`). | ✅ **100% Compliant** |
 | **Security & Headers** | Strict CSP, rate limiting, body size limits, no `dangerouslySetInnerHTML` | Next.js CSP, HSTS, `X-Frame-Options: DENY`, 50KB body limit, 30 req/min sliding window rate limiter. Zero `dangerouslySetInnerHTML`. | ✅ **Hardened** |
 | **UI Design Fidelity** | `Main.dc` festive celebration design | Deep Indigo (`#2E2A7A`), Marigold Gold (`#F5A524`), swaying bunting garland, floating bubbles, orbital countdown ring, ticker marquee. | ✅ **Pixel Perfect** |
-| **Multilingual Support** | English, Hindi (हिन्दी), Marathi (मराठी) | Dynamic real-time switcher in navbar, Indian currency notation (`₹18,00,000`, `₹3,95,000`), localized dates. | ✅ **Native Support** |
+| **Language & Locale** | English (Dedicated focus) | Clean single-language English interface, Indian currency notation (`₹18,00,000`, `₹3,95,000`), localized Indian celebration dates. | ✅ **Complete** |
 | **Accessibility (A11y)** | WCAG 2.1 AA, keyboard navigation, light/dark, reduced-motion | Full keyboard roving tabIndex, axe-core automated audits (0 violations), `prefers-reduced-motion` safety. | ✅ **WCAG AA Clean** |
 | **Comprehensive Tests** | Unit tests, Playwright E2E, axe-core scans | 63 Vitest tests (99.6% coverage), 10 Playwright E2E & Axe accessibility browser tests. | ✅ **100% Passing** |
 
@@ -27,7 +27,7 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────┐
-│  [Logo] Jashn               Overview  Scenarios  [English | हिन्दी | मराठी] [🌙] [New] │
+│  [Logo] Jashn               Overview  Scenarios  [🌙] [Start a new plan]                │
 ├──────────────────────────────────────────────────────────────────────────────────┤
 │  🚩 🚩 🚩 🚩 🚩 🚩  FESTIVE BUNTING SWAY GARLAND  🚩 🚩 🚩 🚩 🚩 🚩                 │
 │  One planner for every celebration                                               │
