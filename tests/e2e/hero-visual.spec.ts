@@ -77,7 +77,7 @@ test.describe('Landing Hero Visual & Accessibility Conformance', () => {
       // 1. Render reference HTML with animations paused via reduced motion
       await page.setViewportSize({ width: vp.width, height: vp.height });
       await page.emulateMedia({ reducedMotion: 'reduce' });
-      await page.goto('/hero-reference.html', { waitUntil: 'networkidle' });
+      await page.goto('/hero-reference.html', { waitUntil: 'domcontentloaded' });
       await page.evaluate(() => document.fonts.ready);
 
       const refSection = page.locator('section.hero');
@@ -90,7 +90,7 @@ test.describe('Landing Hero Visual & Accessibility Conformance', () => {
       const compPage = await context.newPage();
       await compPage.setViewportSize({ width: vp.width, height: vp.height });
       await compPage.emulateMedia({ reducedMotion: 'reduce' });
-      await compPage.goto('/', { waitUntil: 'networkidle' });
+      await compPage.goto('/', { waitUntil: 'domcontentloaded' });
       await compPage.evaluate(() => document.fonts.ready);
 
       const compSection = compPage.locator('section[aria-label^="Welcome"]');
@@ -122,7 +122,7 @@ test.describe('Landing Hero Visual & Accessibility Conformance', () => {
     page,
   }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     const heroSection = page.locator('section[aria-label^="Welcome"]');
     await expect(heroSection).toBeVisible();
@@ -153,7 +153,7 @@ test.describe('Landing Hero Visual & Accessibility Conformance', () => {
   });
 
   test('hero section reports zero axe-core accessibility violations', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     const results = await new AxeBuilder({ page })
       .include('section[aria-label^="Welcome"]')
@@ -163,7 +163,7 @@ test.describe('Landing Hero Visual & Accessibility Conformance', () => {
   });
 
   test('interactive elements meet touch target and focus visibility standards', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     const heroSection = page.locator('section[aria-label^="Welcome"]');
     const buttons = heroSection.locator('button');

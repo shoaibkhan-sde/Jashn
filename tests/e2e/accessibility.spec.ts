@@ -3,7 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 
 test.describe('Accessibility Audits (axe-core WCAG AA)', () => {
   test('home page passes all WCAG AA accessibility rules in default state', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     const accessibilityScanResults = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
@@ -14,7 +14,7 @@ test.describe('Accessibility Audits (axe-core WCAG AA)', () => {
   });
 
   test('home page passes accessibility in dark mode', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     // Switch to dark mode
     const themeBtn = page.getByRole('button', { name: /Switch to dark mode/i });
@@ -30,7 +30,7 @@ test.describe('Accessibility Audits (axe-core WCAG AA)', () => {
 
   test('supports reduced-motion preference without layout breakage', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     // Verify page renders cleanly without motion
     await expect(page.locator('h1')).toContainText('Priya & Arjun’s Wedding');
@@ -44,7 +44,7 @@ test.describe('Accessibility Audits (axe-core WCAG AA)', () => {
   });
 
   test('scenario comparison modal is accessible with focus trap and role dialog', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     // Open comparison modal
     await page.getByRole('button', { name: 'Compare' }).first().click();

@@ -11,7 +11,7 @@ test.describe('Navbar Visual, Responsive & Accessibility Conformance', () => {
   for (const vp of VIEWPORTS) {
     test(`renders correctly at ${vp.width}px with menu closed`, async ({ page }) => {
       await page.setViewportSize({ width: vp.width, height: vp.height });
-      await page.goto('/', { waitUntil: 'networkidle' });
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
 
       const header = page.locator('header').first();
       await expect(header).toBeVisible();
@@ -48,7 +48,7 @@ test.describe('Navbar Visual, Responsive & Accessibility Conformance', () => {
 
     test(`renders dropdown menu properly when opened at ${vp.width}px`, async ({ page }) => {
       await page.setViewportSize({ width: vp.width, height: vp.height });
-      await page.goto('/', { waitUntil: 'networkidle' });
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
 
       const header = page.locator('header').first();
       const langBtn = header.getByTestId('lang-switcher');
@@ -74,7 +74,7 @@ test.describe('Navbar Visual, Responsive & Accessibility Conformance', () => {
   }
 
   test('reports zero axe-core accessibility violations with menu closed and open', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     // 1. Menu closed
     const resultsClosed = await new AxeBuilder({ page })
@@ -95,7 +95,7 @@ test.describe('Navbar Visual, Responsive & Accessibility Conformance', () => {
 
   test('mobile navigation panel toggles below 820px', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     const header = page.locator('header').first();
     const toggleBtn = header.getByRole('button', { name: /navigation menu/i });

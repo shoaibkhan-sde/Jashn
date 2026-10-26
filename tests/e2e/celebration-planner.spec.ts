@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Jashn Celebration & Event Planner', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
   });
 
   test('renders festive hero and Priya & Arjun wedding plan from Main.dc', async ({ page }) => {
