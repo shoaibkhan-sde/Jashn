@@ -10,6 +10,7 @@ import { sanitizeAndValidatePrompt, wrapPromptWithDelimiters } from './security'
 import { AssistantResponse, AssistantStructuredOutputSchema } from './schemas';
 import { globalAssistantCache, ResponseCache } from './cache';
 import { runDeterministicFallback } from './fallback';
+import { isSamplePlan, isExplicitSamplePlanQuery, isGreetingQuery } from '@/domain/plan-utils';
 
 export interface AIServiceDependencies {
   failoverManager?: ModelFailoverManager;
@@ -46,6 +47,9 @@ export class CelebrationAIService {
     }
 
     const query = securityCheck.sanitizedQuery;
+    const isSample = isSamplePlan(plan);
+    const explicitSample = isExplicitSamplePlanQuery(query);
+    const isGreeting = isGreetingQuery(query);
 
     // Step 2: Cache lookup
     const cacheKey = this.cache.generateKey(query, plan.id, plan.totalBudget);
@@ -66,6 +70,10 @@ export class CelebrationAIService {
     const availableModels = this.failover.getAvailableModels();
     const systemPrompt = `You are Jashn, an expert, warm, and creative AI Celebration & Event Planner for weddings, birthdays, and festivals.
 Help the user with any question they have, from friendly greetings (hi, hello) to etiquette, themes, catering, entertainment, budgets, timeline advice, or general conversation. Always be friendly and helpful.
+CRITICAL USER PRIVACY & CONTEXT RULES:
+- NEVER introduce, mention, or assume demonstration/sample plans (such as "Priya & Arjun's Wedding", "Aarav's Birthday", "Prompt Wars", etc.) unless the user explicitly asks about sample or demo plans.
+- If the user sends a greeting (e.g. "hi", "hello", "hey") or asks general questions, respond warmly and conversationally as Jashn Celebration & Event Planner without unprompted references to sample plans.
+- ONLY reference specific celebration details if the user has created their own plan (marked as User's Created Plan) or explicitly asked about the sample plan.
 CRITICAL MATHEMATICAL RULE: Never calculate raw budget totals yourself.
 If proposing budget cuts or rebalances, only output proposed parameters (type, cutPercentage, lockedCategories). All math is handled by pure domain functions.
 Always return valid JSON strictly matching the schema:
@@ -75,13 +83,23 @@ Always return valid JSON strictly matching the schema:
   "proposedBudgetChange": { "type": "cut_percentage", "cutPercentage": 10, "lockedCategories": ["photography"] } // optional
 }`;
 
+    let eventContext = '';
+    if (!isSample) {
+      eventContext = `User's Created Celebration Plan: "${plan.title}" (${plan.eventType})\n` +
+        `Date: ${plan.date}, Total Budget: ₹${plan.totalBudget}, Guests: ${plan.guests.length}\n`;
+    } else if (explicitSample) {
+      eventContext = `Demonstration Sample Plan (Requested by User): "${plan.title}" (${plan.eventType})\n` +
+        `Date: ${plan.date}, Total Budget: ₹${plan.totalBudget}, Guests: ${plan.guests.length}\n`;
+    } else {
+      eventContext = `User Plan State: Browsing / General Mode (No user-created plan loaded).\n` +
+        `CRITICAL PRIVACY RULE: Do NOT mention or refer to sample plans like "${plan.title}" or names like Priya, Arjun, or Aarav unless the user explicitly asks about them. Answer the user's query as a friendly, knowledgeable celebration planner.\n`;
+    }
+
     for (const model of availableModels) {
       try {
         const ai = new GoogleGenAI({ apiKey: key });
         const wrappedInput = wrapPromptWithDelimiters(
-          `Current Event: "${plan.title}" (${plan.eventType})\n` +
-          `Date: ${plan.date}, Total Budget: ₹${plan.totalBudget}, Guests: ${plan.guests.length}\n` +
-          `Query: ${query}`
+          `${eventContext}Query: ${query}`
         );
 
         const response = await ai.models.generateContent({

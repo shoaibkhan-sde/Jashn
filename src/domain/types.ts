@@ -134,4 +134,6 @@ export interface CelebrationPlan {
   vendors: VendorItem[];
   guests: GuestItem[];
   savedIdeaIds: string[];
+  isSample?: boolean;
+  isUserCreated?: boolean;
 }

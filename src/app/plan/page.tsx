@@ -15,6 +15,8 @@ import {
   serializePlanToUrlFragment,
 } from '@/domain/event-planner/export-utils';
 import { saveStoredEvent, clearActiveEvent, STORAGE_KEY_ACTIVE } from '@/domain/event-planner/events-storage';
+import { usePlannerStore } from '@/store/plannerStore';
+import { convertGeneratedToCelebrationPlan } from '@/domain/plan-utils';
 
 const STORAGE_KEY = STORAGE_KEY_ACTIVE;
 
@@ -61,6 +63,7 @@ export default function PlanEventPage() {
         const parsed = JSON.parse(rawStored);
         if (parsed && parsed.id && parsed.input && parsed.budget && parsed.timeline) {
           setPlan(parsed);
+          usePlannerStore.getState().syncUserPlan(convertGeneratedToCelebrationPlan(parsed));
           setAnnouncement('Previous celebration plan restored from browser storage.');
         } else {
           localStorage.removeItem(STORAGE_KEY);
@@ -77,6 +80,7 @@ export default function PlanEventPage() {
   const handleUpdatePlan = (updatedPlan: GeneratedEventPlan) => {
     setPlan(updatedPlan);
     saveStoredEvent(updatedPlan);
+    usePlannerStore.getState().syncUserPlan(convertGeneratedToCelebrationPlan(updatedPlan));
   };
 
   const handlePlanCreated = (newPlan: GeneratedEventPlan) => {

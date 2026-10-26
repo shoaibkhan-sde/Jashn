@@ -21,6 +21,8 @@ const RequestBodySchema = z.object({
     vendors: z.array(z.any()),
     guests: z.array(z.any()),
     savedIdeaIds: z.array(z.string()),
+    isSample: z.boolean().optional(),
+    isUserCreated: z.boolean().optional(),
   }),
   lockedCategories: z.array(ExpenseCategorySchema).optional(),
 });

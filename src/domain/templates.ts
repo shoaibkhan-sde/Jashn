@@ -41,6 +41,7 @@ export const WEDDING_TEMPLATE: CelebrationPlan = {
     ...Array(11).fill(null).map((_, i) => ({ id: `g-d-${i}`, name: `Declined Guest ${i + 1}`, status: 'declined' as const, plusOnes: 0 })),
   ],
   savedIdeaIds: ['idea-w-1', 'idea-w-2'],
+  isSample: true,
 };
 
 export const BIRTHDAY_TEMPLATE: CelebrationPlan = {
@@ -71,6 +72,7 @@ export const BIRTHDAY_TEMPLATE: CelebrationPlan = {
     ...Array(10).fill(null).map((_, i) => ({ id: `gb-p-${i}`, name: `Friend ${i + 31}`, status: 'pending' as const, plusOnes: 0 })),
   ],
   savedIdeaIds: ['idea-b-1'],
+  isSample: true,
 };
 
 export const COMMUNITY_TEMPLATE: CelebrationPlan = {
@@ -96,6 +98,7 @@ export const COMMUNITY_TEMPLATE: CelebrationPlan = {
   ],
   guests: Array(250).fill(null).map((_, i) => ({ id: `gc-${i}`, name: `Resident ${i + 1}`, status: 'confirmed' as const, plusOnes: 1 })),
   savedIdeaIds: ['idea-c-1'],
+  isSample: true,
 };
 
 export const FESTIVAL_TEMPLATE: CelebrationPlan = {
@@ -120,6 +123,7 @@ export const FESTIVAL_TEMPLATE: CelebrationPlan = {
   ],
   guests: Array(120).fill(null).map((_, i) => ({ id: `gf-${i}`, name: `Family ${i + 1}`, status: 'confirmed' as const, plusOnes: 0 })),
   savedIdeaIds: ['idea-f-1'],
+  isSample: true,
 };
 
 export function getTemplateByEventType(eventType: EventType): CelebrationPlan {

@@ -12,6 +12,7 @@ import { toggleSavedIdea } from '@/domain/ideas';
 import { applyScenarioToPlan, createScenarioSimulation } from '@/domain/scenarios';
 import { defaultAIService } from '@/ai/service';
 import { ScenarioSimulation } from '@/domain/types';
+import { isSamplePlan, convertGeneratedToCelebrationPlan } from '@/domain/plan-utils';
 import { ChatMessage, PlannerState } from './types';
 
 export const INITIAL_MESSAGES: ChatMessage[] = [
@@ -64,9 +65,13 @@ export const usePlannerStore = create<PlannerState>((set, get) => ({
     set({ plan: template, activeTab: 'overview', activeDiffSimulation: null });
   },
 
+  syncUserPlan: (plan) => {
+    set({ plan: { ...plan, isUserCreated: true, isSample: false }, activeDiffSimulation: null });
+  },
+
   updateEventDetails: (title, date, location) => {
     set((state) => ({
-      plan: { ...state.plan, title, date, location },
+      plan: { ...state.plan, title, date, location, isUserCreated: true, isSample: false },
       isEditModalOpen: false,
     }));
   },
@@ -117,7 +122,22 @@ export const usePlannerStore = create<PlannerState>((set, get) => ({
     set({ messages: nextMessagesWithUser, isThinking: true });
 
     try {
-      const currentPlan = get().plan;
+      let currentPlan = get().plan;
+
+      // Auto-detect if user created a custom plan in localStorage
+      if (typeof window !== 'undefined' && isSamplePlan(currentPlan)) {
+        try {
+          const rawStored = localStorage.getItem('jashn.pure_event_plan');
+          if (rawStored) {
+            const parsed = JSON.parse(rawStored);
+            if (parsed && parsed.id && parsed.input && !parsed.id.startsWith('sample-')) {
+              currentPlan = convertGeneratedToCelebrationPlan(parsed);
+              set({ plan: currentPlan });
+            }
+          }
+        } catch {}
+      }
+
       let res;
       try {
         const r = await fetch('/api/assistant', {

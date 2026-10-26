@@ -44,4 +44,5 @@ export interface PlannerState {
   resetChat: () => void;
   applySimulation: (sim: ScenarioSimulation) => void;
   setActiveDiffSimulation: (sim: ScenarioSimulation | null) => void;
+  syncUserPlan: (plan: CelebrationPlan) => void;
 }

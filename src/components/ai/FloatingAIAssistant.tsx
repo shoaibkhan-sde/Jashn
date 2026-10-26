@@ -6,6 +6,8 @@ import { RobotIcon } from './RobotIcon';
 import { AIAssistantMessage } from './AIAssistantMessage';
 import { RotateCcw, X, Send, Loader2 } from 'lucide-react';
 
+import { convertGeneratedToCelebrationPlan } from '@/domain/plan-utils';
+
 const SUGGESTIONS = [
   'How do I start planning?',
   'How is my budget split?',
@@ -21,13 +23,20 @@ export const FloatingAIAssistant: React.FC = () => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Restore stored chat messages from localStorage on client mount
+  // Restore stored chat messages & user-created plan from localStorage on client mount
   useEffect(() => {
     try {
       const stored = localStorage.getItem('jashn.ai_chat_messages');
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) setMessages(parsed);
+      }
+      const rawStoredPlan = localStorage.getItem('jashn.pure_event_plan');
+      if (rawStoredPlan) {
+        const parsedPlan = JSON.parse(rawStoredPlan);
+        if (parsedPlan && parsedPlan.id && parsedPlan.input && !parsedPlan.id.startsWith('sample-')) {
+          usePlannerStore.getState().syncUserPlan(convertGeneratedToCelebrationPlan(parsedPlan));
+        }
       }
     } catch {}
   }, [setMessages]);

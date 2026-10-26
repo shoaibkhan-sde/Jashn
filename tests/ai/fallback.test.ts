@@ -58,8 +58,44 @@ describe('ai/fallback', () => {
     expect(res.reply).toContain('Catering');
   });
 
-  it('returns structured general celebration guidance for other questions', () => {
+  it('does NOT mention sample plan names on greetings like Hii or Hello', () => {
+    const res = runDeterministicFallback('Hii', WEDDING_TEMPLATE);
+    expect(res.source).toBe('built-in');
+    expect(res.intent).toBe('general_advice');
+    expect(res.reply).toContain('Hello! 👋 I am Jashn');
+    expect(res.reply).not.toContain('Priya');
+    expect(res.reply).not.toContain('Arjun');
+    expect(res.reply).not.toContain('Aarav');
+  });
+
+  it('provides general celebration guidance on sample plans without mentioning sample names', () => {
     const res = runDeterministicFallback('How is my event looking?', WEDDING_TEMPLATE);
+    expect(res.source).toBe('built-in');
+    expect(res.intent).toBe('general_advice');
+    expect(res.reply).not.toContain(WEDDING_TEMPLATE.title);
+    expect(res.reply).toContain('Jashn Celebration & Event Planning assistant');
+  });
+
+  it('acknowledges user created plan on inquiries and greetings', () => {
+    const userPlan = {
+      ...WEDDING_TEMPLATE,
+      id: 'plan_user_created_123',
+      title: "Kavya's 16th Birthday Celebration",
+      isUserCreated: true,
+      isSample: false,
+    };
+
+    const res = runDeterministicFallback('How is my event looking?', userPlan);
+    expect(res.source).toBe('built-in');
+    expect(res.intent).toBe('general_advice');
+    expect(res.reply).toContain("Kavya's 16th Birthday Celebration");
+
+    const greetRes = runDeterministicFallback('Hello', userPlan);
+    expect(greetRes.reply).toContain("Kavya's 16th Birthday Celebration");
+  });
+
+  it('only reveals sample plan details when user explicitly asks for sample plan', () => {
+    const res = runDeterministicFallback('What is the sample plan budget?', WEDDING_TEMPLATE);
     expect(res.source).toBe('built-in');
     expect(res.intent).toBe('general_advice');
     expect(res.reply).toContain(WEDDING_TEMPLATE.title);
