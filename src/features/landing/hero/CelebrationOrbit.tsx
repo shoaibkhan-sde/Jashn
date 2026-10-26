@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import styles from './hero.module.css';
 import { SAMPLE_EVENTS } from './hero.data';
 
@@ -108,12 +109,14 @@ export const CelebrationOrbit: React.FC = () => {
               activeIdx === item.idx ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
           >
-            <img
+            <Image
               src={item.imgSrc}
               alt={item.imgAlt}
+              fill
+              priority
+              sizes="204px"
               className={styles.ctrCircleImg}
-              style={{ objectPosition: item.imgPosition }}
-              loading="eager"
+              style={{ objectPosition: item.imgPosition, objectFit: 'cover' }}
               draggable={false}
               onDragStart={(e) => e.preventDefault()}
             />
