@@ -11,7 +11,7 @@ test.describe('Jashn Celebration & Event Planner', () => {
     await expect(page.getByText(/Priya & Arjun/i).first()).toBeVisible();
 
     // Check budget figures
-    await expect(page.getByText(/18,00,000/)).toBeVisible();
+    await expect(page.getByText(/18,00,000/).first()).toBeVisible();
     await expect(page.getByText(/220 guests/i).first()).toBeVisible();
   });
 

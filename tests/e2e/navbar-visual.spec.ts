@@ -21,7 +21,7 @@ test.describe('Navbar Visual, Responsive & Accessibility Conformance', () => {
 
       // Check desktop nav links
       if (vp.width > 820) {
-        const homeLink = header.getByRole('link', { name: 'Home' });
+        const homeLink = header.getByRole('link', { name: 'Home', exact: true });
         await expect(homeLink).toBeVisible();
       }
 
@@ -55,7 +55,7 @@ test.describe('Navbar Visual, Responsive & Accessibility Conformance', () => {
 
     const mobilePanel = header.locator('#mobile-nav-panel');
     await expect(mobilePanel).toBeVisible();
-    await expect(mobilePanel.getByRole('link', { name: 'Home' })).toBeVisible();
+    await expect(mobilePanel.getByRole('link', { name: 'Home', exact: true })).toBeVisible();
 
     // Close mobile menu
     await toggleBtn.click();
