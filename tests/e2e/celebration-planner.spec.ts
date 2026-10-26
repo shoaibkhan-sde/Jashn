@@ -12,7 +12,7 @@ test.describe('Jashn Celebration & Event Planner', () => {
 
     // Check budget figures
     await expect(page.getByText(/18,00,000/).first()).toBeVisible();
-    await expect(page.getByText(/220 guests/i).first()).toBeVisible();
+    await expect(page.getByText(/350 guests/i).first()).toBeVisible();
   });
 
   test('switches tabs and displays respective planning sections', async ({ page }) => {
