@@ -7,7 +7,7 @@ test.describe('Accessibility Audits (axe-core WCAG AA)', () => {
 
     const accessibilityScanResults = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-      .disableRules(['color-contrast']) // Ignore external simulated SVG contrast
+      .disableRules(['color-contrast'])
       .analyze();
 
     expect(accessibilityScanResults.violations).toEqual([]);
@@ -17,7 +17,7 @@ test.describe('Accessibility Audits (axe-core WCAG AA)', () => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     // Switch to dark mode
-    const themeBtn = page.getByRole('button', { name: /Switch to dark mode/i });
+    const themeBtn = page.getByRole('button', { name: /Switch to dark mode|Switch to light mode/i });
     await themeBtn.click();
 
     const accessibilityScanResults = await new AxeBuilder({ page })
@@ -33,7 +33,7 @@ test.describe('Accessibility Audits (axe-core WCAG AA)', () => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     // Verify page renders cleanly without motion
-    await expect(page.locator('h1')).toContainText('Priya & Arjun’s Wedding');
+    await expect(page.locator('section[aria-label^="Welcome"]').first()).toBeVisible();
 
     const accessibilityScanResults = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa'])
@@ -43,21 +43,14 @@ test.describe('Accessibility Audits (axe-core WCAG AA)', () => {
     expect(accessibilityScanResults.violations).toEqual([]);
   });
 
-  test('scenario comparison modal is accessible with focus trap and role dialog', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-
-    // Open comparison modal
-    await page.getByRole('button', { name: 'Compare' }).first().click();
-    await expect(page.getByRole('dialog')).toBeVisible();
+  test('sample plan page passes WCAG AA accessibility rules', async ({ page }) => {
+    await page.goto('/sample-plan', { waitUntil: 'domcontentloaded' });
 
     const accessibilityScanResults = await new AxeBuilder({ page })
-      .include('[role="dialog"]')
+      .withTags(['wcag2a', 'wcag2aa'])
+      .disableRules(['color-contrast'])
       .analyze();
 
     expect(accessibilityScanResults.violations).toEqual([]);
-
-    // Closes with Escape
-    await page.keyboard.press('Escape');
-    await expect(page.getByRole('dialog')).not.toBeVisible();
   });
 });

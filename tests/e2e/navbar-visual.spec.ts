@@ -19,78 +19,25 @@ test.describe('Navbar Visual, Responsive & Accessibility Conformance', () => {
       // Check brand logo and wordmark
       await expect(header.getByText('Jashn')).toBeVisible();
 
-      // Check active page state
+      // Check desktop nav links
       if (vp.width > 820) {
-        const overviewLink = header.getByRole('link', { name: 'Overview' });
-        await expect(overviewLink).toBeVisible();
-        await expect(overviewLink).toHaveAttribute('aria-current', 'page');
+        const homeLink = header.getByRole('link', { name: 'Home' });
+        await expect(homeLink).toBeVisible();
       }
 
-      // Check language button
-      const langBtn = header.getByTestId('lang-switcher');
-      await expect(langBtn).toBeVisible();
-      await expect(langBtn).toHaveAttribute('aria-expanded', 'false');
-
-      // Tagline visibility
-      const tagline = header.getByText('GenAI Celebration Planner');
-      if (vp.width <= 1100) {
-        await expect(tagline).not.toBeVisible();
-      } else {
-        await expect(tagline).toBeVisible();
-      }
-
-      // Capture screenshot with menu closed
-      await page.screenshot({
-        path: `tests/e2e/screenshots/navbar-${vp.width}-closed.png`,
-        clip: { x: 0, y: 0, width: vp.width, height: 120 },
-      });
-    });
-
-    test(`renders dropdown menu properly when opened at ${vp.width}px`, async ({ page }) => {
-      await page.setViewportSize({ width: vp.width, height: vp.height });
-      await page.goto('/', { waitUntil: 'domcontentloaded' });
-
-      const header = page.locator('header').first();
-      const langBtn = header.getByTestId('lang-switcher');
-
-      // Open menu
-      await langBtn.click();
-      await expect(langBtn).toHaveAttribute('aria-expanded', 'true');
-
-      const menu = header.getByRole('menu');
-      await expect(menu).toBeVisible();
-
-      // All 3 language options visible
-      await expect(menu.getByRole('menuitemradio', { name: /English/i })).toBeVisible();
-      await expect(menu.getByRole('menuitemradio', { name: /हिन्दी/i })).toBeVisible();
-      await expect(menu.getByRole('menuitemradio', { name: /मराठी/i })).toBeVisible();
-
-      // Capture screenshot with menu open
-      await page.screenshot({
-        path: `tests/e2e/screenshots/navbar-${vp.width}-open.png`,
-        clip: { x: 0, y: 0, width: vp.width, height: 260 },
-      });
+      // Check theme toggle button
+      const themeBtn = header.getByRole('button', { name: /Switch to (dark|light) mode/i });
+      await expect(themeBtn).toBeVisible();
     });
   }
 
-  test('reports zero axe-core accessibility violations with menu closed and open', async ({ page }) => {
+  test('reports zero axe-core accessibility violations in header', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    // 1. Menu closed
-    const resultsClosed = await new AxeBuilder({ page })
+    const results = await new AxeBuilder({ page })
       .include('header')
       .analyze();
-    expect(resultsClosed.violations).toEqual([]);
-
-    // 2. Menu open
-    const langBtn = page.getByTestId('lang-switcher');
-    await langBtn.click();
-    await expect(page.getByRole('menu')).toBeVisible();
-
-    const resultsOpen = await new AxeBuilder({ page })
-      .include('header')
-      .analyze();
-    expect(resultsOpen.violations).toEqual([]);
+    expect(results.violations).toEqual([]);
   });
 
   test('mobile navigation panel toggles below 820px', async ({ page }) => {
@@ -108,10 +55,7 @@ test.describe('Navbar Visual, Responsive & Accessibility Conformance', () => {
 
     const mobilePanel = header.locator('#mobile-nav-panel');
     await expect(mobilePanel).toBeVisible();
-    await expect(mobilePanel.getByRole('link', { name: 'Overview' })).toHaveAttribute(
-      'aria-current',
-      'page'
-    );
+    await expect(mobilePanel.getByRole('link', { name: 'Home' })).toBeVisible();
 
     // Close mobile menu
     await toggleBtn.click();

@@ -52,4 +52,3 @@ jobs:
 
       - name: Run Playwright E2E and Axe Accessibility Tests
         run: npm run test:e2e
-        continue-on-error: true
