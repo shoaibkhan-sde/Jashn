@@ -98,7 +98,7 @@ export const FeaturesGridSection: React.FC = () => {
               </p>
             </div>
 
-            <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-slate-400">
+            <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-slate-500 dark:text-slate-400">
               Built into core runtime ✓
             </div>
           </div>

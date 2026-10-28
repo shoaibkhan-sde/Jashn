@@ -11,6 +11,14 @@ export interface VendorStatusMeta {
   tone: 'green' | 'amber' | 'neutral';
 }
 
+/**
+ * Resolves display metadata, badge text, and color tone for a vendor's status.
+ *
+ * @param status - Vendor booking status.
+ * @param deadlineDate - Deadline for contract/booking.
+ * @param currentDate - Reference date.
+ * @returns Status badge label and visual tone.
+ */
 export function getVendorStatusMeta(
   status: VendorStatus,
   deadlineDate: string,
@@ -43,6 +51,15 @@ export function getVendorStatusMeta(
   }
 }
 
+/**
+ * Updates a vendor's booking status and optional commercial partner name.
+ *
+ * @param vendors - Current vendors array.
+ * @param vendorId - Target vendor ID.
+ * @param newStatus - New status to apply.
+ * @param vendorName - Optional name of the chosen vendor/supplier.
+ * @returns Updated array of vendors.
+ */
 export function updateVendorStatus(
   vendors: VendorItem[],
   vendorId: string,
@@ -59,6 +76,12 @@ export function updateVendorStatus(
   });
 }
 
+/**
+ * Computes aggregate metrics for vendor procurement progress and total vendor budget.
+ *
+ * @param vendors - List of vendors.
+ * @returns Summary containing totalAllocated, bookedCount, pendingCount, and totalVendors.
+ */
 export function calculateVendorBudgetSummary(vendors: VendorItem[]): {
   totalAllocated: number;
   bookedCount: number;

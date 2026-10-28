@@ -84,7 +84,7 @@ export const AboutMetricsSection: React.FC = () => {
                 <span className="p-2.5 rounded-2xl bg-white dark:bg-[#1C1F2B] shadow-sm">
                   {m.icon}
                 </span>
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                   Feature 0{idx + 1}
                 </span>
               </div>

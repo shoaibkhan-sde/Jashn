@@ -73,7 +73,7 @@ export const FaqSection: React.FC = () => {
                 className="w-full min-h-[56px] px-6 py-4 flex items-center justify-between text-left font-bold text-sm sm:text-base text-slate-900 dark:text-white hover:text-[#2E2A7A] dark:hover:text-[#F5A524] transition-colors gap-4"
               >
                 <span>{faq.question}</span>
-                <span className="text-slate-400 font-normal shrink-0">
+                <span className="text-slate-500 dark:text-slate-400 font-normal shrink-0">
                   <svg
                     className={`w-5 h-5 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#F5A524]' : ''}`}
                     fill="none"

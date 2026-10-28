@@ -51,6 +51,7 @@ When reduced motion is enabled:
 Automated accessibility audits are built into our Playwright test suite (`tests/e2e/accessibility.spec.ts`) using `@axe-core/playwright`.
 
 ### Rules Validated:
+- `color-contrast`
 - `aria-allowed-attr`
 - `aria-required-children`
 - `aria-required-parent`

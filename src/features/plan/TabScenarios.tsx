@@ -337,7 +337,7 @@ export const TabScenarios: React.FC<TabScenariosProps> = ({ plan, onUpdatePlan }
                     </td>
                     <td className="py-3 px-4 font-mono">
                       {adj.difference === 0 ? (
-                        <span className="text-slate-400">₹0</span>
+                        <span className="text-slate-500 dark:text-slate-400 font-medium">₹0</span>
                       ) : adj.difference < 0 ? (
                         <span className="text-emerald-600 dark:text-emerald-400 font-bold">
                           −{formatCurrency(Math.abs(adj.difference))}

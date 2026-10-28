@@ -15,6 +15,13 @@ import { getEventDefinition, isValidEventType } from './registry';
 // Regex to strip control characters & bidirectional overrides
 const UNWANTED_CHARS_REGEX = /[\u0000-\u001F\u007F-\u009F\u200E\u200F\u202A-\u202E\u2066-\u2069]/g;
 
+/**
+ * Sanitizes an unknown text value by stripping control characters, unicode
+ * bidirectional overrides, and unwanted whitespace.
+ *
+ * @param val - The raw text input.
+ * @returns Clean, trimmed string.
+ */
 export function sanitizeText(val: unknown): string {
   if (typeof val !== 'string') return '';
   return val.replace(UNWANTED_CHARS_REGEX, '').trim();
@@ -31,6 +38,23 @@ function getDaysBetween(d1: Date, d2: Date): number {
   return Math.round((d2.getTime() - d1.getTime()) / msPerDay);
 }
 
+/**
+ * Validates and sanitizes raw user event plan parameters against archetype definitions,
+ * date bounds, and financial minimums.
+ *
+ * Validation checks:
+ * 1. Device vs Server clock skew tolerance (rejects drift > SERVER_DATE_TOLERANCE_DAYS).
+ * 2. Event type registration check.
+ * 3. Event name length and character constraints.
+ * 4. Event date futurity (event must be today or in the future, up to MAX_EVENT_FUTURE_YEARS).
+ * 5. Total budget against archetype minimum budget thresholds.
+ * 6. Guest capacity against archetype maximum guest limits.
+ * 7. City, theme, and interests limits.
+ *
+ * @param raw - Untrusted partial user request.
+ * @param serverTodayUtcStr - Authoritative current UTC date string.
+ * @returns Result object with `isValid`, sanitized input, and list of validation errors.
+ */
 export function validatePlanRequest(
   raw: Partial<PlanRequestRaw>,
   serverTodayUtcStr: string

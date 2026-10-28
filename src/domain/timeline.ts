@@ -5,6 +5,13 @@
 
 import { EventType, TimelineMilestone, TimelineStatus } from './types';
 
+/**
+ * Calculates calendar days remaining between the current date and a target ISO date string.
+ *
+ * @param targetDateStr - Target date in YYYY-MM-DD format.
+ * @param currentDate - Reference date (defaults to now).
+ * @returns Signed integer count of calendar days remaining.
+ */
 export function calculateDaysRemaining(targetDateStr: string, currentDate = new Date()): number {
   const target = new Date(targetDateStr);
   if (isNaN(target.getTime())) return 0;
@@ -24,6 +31,13 @@ export function calculateDaysRemaining(targetDateStr: string, currentDate = new 
   return Math.round(diffMs / (1000 * 60 * 60 * 24));
 }
 
+/**
+ * Formats a human-readable urgency badge string for a milestone.
+ *
+ * @param daysRemaining - Days until due date.
+ * @param status - Current completion status.
+ * @returns Human-friendly label (e.g. "Done", "Due today", "Overdue by 3d", "In 5 days").
+ */
 export function formatUrgencyLabel(daysRemaining: number, status: TimelineStatus): string {
   if (status === 'completed') return 'Done';
   if (daysRemaining < 0) return `Overdue by ${Math.abs(daysRemaining)}d`;
@@ -34,6 +48,12 @@ export function formatUrgencyLabel(daysRemaining: number, status: TimelineStatus
   return `In ${weeks} weeks`;
 }
 
+/**
+ * Sorts milestones chronologically, placing incomplete items first followed by completed items.
+ *
+ * @param milestones - Array of milestones.
+ * @returns Sorted copy of milestones.
+ */
 export function sortMilestonesByDueDate(milestones: TimelineMilestone[]): TimelineMilestone[] {
   return [...milestones].sort((a, b) => {
     // Completed items go after pending/in_progress
@@ -43,6 +63,13 @@ export function sortMilestonesByDueDate(milestones: TimelineMilestone[]): Timeli
   });
 }
 
+/**
+ * Toggles a milestone between pending and completed, updating its urgency label.
+ *
+ * @param milestones - Milestone list.
+ * @param milestoneId - ID of milestone to toggle.
+ * @returns New array of milestones.
+ */
 export function toggleMilestoneStatus(
   milestones: TimelineMilestone[],
   milestoneId: string
@@ -62,6 +89,14 @@ export function toggleMilestoneStatus(
   });
 }
 
+/**
+ * Returns a subset of upcoming milestones enriched with remaining day counts.
+ *
+ * @param milestones - Source milestones.
+ * @param limit - Maximum items to return (defaults to 4).
+ * @param currentDate - Reference date.
+ * @returns Enriched upcoming milestones.
+ */
 export function getUpcomingMilestones(
   milestones: TimelineMilestone[],
   limit = 4,
@@ -85,6 +120,13 @@ export function getUpcomingMilestones(
   return [...pending, ...completed].slice(0, limit);
 }
 
+/**
+ * Generates sample milestone presets mapped to an archetype and event date.
+ *
+ * @param eventDateStr - Event date string (YYYY-MM-DD).
+ * @param eventType - Archetype category.
+ * @returns Array of default milestone templates.
+ */
 export function generateEventMilestones(
   eventDateStr: string,
   eventType: EventType

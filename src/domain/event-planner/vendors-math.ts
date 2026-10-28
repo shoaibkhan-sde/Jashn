@@ -12,6 +12,23 @@ function getDaysDiff(fromUtcDateStr: string, toUtcDateStr: string): number {
   return Math.round((d2.getTime() - d1.getTime()) / 86400000);
 }
 
+/**
+ * Computes a prioritized vendor procurement plan tailored to the event parameters and budget.
+ *
+ * Capabilities:
+ * - Lead time scaling: Compresses vendor booking deadlines when event date is near.
+ * - Dynamic venue filtering: Eliminates physical catering and venue requirements for online events.
+ * - Budget allocation mapping: Ties vendor line items to the calculated category budget.
+ * - Essential vendor identification and contract negotiation question generation.
+ *
+ * @param eventDate - Celebration date string (YYYY-MM-DD).
+ * @param todayDate - Current date reference (YYYY-MM-DD).
+ * @param eventDef - Event archetype definition with vendor requirements.
+ * @param budgetPlan - Calculated budget plan with category allocations.
+ * @param priorities - User-selected priority category IDs.
+ * @param venueType - Venue classification ('indoor', 'outdoor', 'online').
+ * @returns A structured `VendorPlan` with deadlines, checklist steps, and negotiation questions.
+ */
 export function computeVendorPlan(
   eventDate: string,
   todayDate: string,

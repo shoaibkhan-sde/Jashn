@@ -6,6 +6,18 @@
 import { BudgetItem, CelebrationPlan, ExpenseCategory, ScenarioAdjustment, ScenarioSimulation } from './types';
 import { rebalanceBudget, roundCurrency } from './budget';
 
+/**
+ * Generates a scenario simulation diff between current items and a target budget,
+ * calculating per-category adjustments and honoring locked categories.
+ *
+ * @param id - Unique scenario identifier.
+ * @param name - Display title.
+ * @param description - Human-readable explanation.
+ * @param currentItems - Active budget items.
+ * @param newTotalBudget - Target new total budget.
+ * @param lockedCategories - Categories exempt from changes.
+ * @returns Complete `ScenarioSimulation` diff structure.
+ */
 export function createScenarioSimulation(
   id: string,
   name: string,
@@ -44,6 +56,14 @@ export function createScenarioSimulation(
   };
 }
 
+/**
+ * Creates a percentage-cut scenario simulation (e.g. 10% budget reduction).
+ *
+ * @param currentItems - Current items.
+ * @param cutPercent - Percentage to cut (1-90%).
+ * @param lockedCategories - Categories exempt from reduction.
+ * @returns Scenario simulation.
+ */
 export function simulateBudgetCut(
   currentItems: BudgetItem[],
   cutPercent: number, // e.g. 10 for 10% cut
@@ -67,6 +87,16 @@ export function simulateBudgetCut(
   );
 }
 
+/**
+ * Simulates scaling guest-sensitive categories (catering, gifts, invitations)
+ * to accommodate a modified headcount.
+ *
+ * @param currentItems - Active items.
+ * @param currentGuestCount - Baseline guest count.
+ * @param newGuestCount - Proposed new guest count.
+ * @param lockedCategories - Exempt categories.
+ * @returns Scenario simulation.
+ */
 export function simulateGuestCountChange(
   currentItems: BudgetItem[],
   currentGuestCount: number,
@@ -105,6 +135,13 @@ export function simulateGuestCountChange(
   );
 }
 
+/**
+ * Applies a scenario simulation to an active CelebrationPlan, updating total budget and items.
+ *
+ * @param plan - Current plan.
+ * @param scenario - Accepted scenario simulation.
+ * @returns Updated CelebrationPlan.
+ */
 export function applyScenarioToPlan(
   plan: CelebrationPlan,
   scenario: ScenarioSimulation

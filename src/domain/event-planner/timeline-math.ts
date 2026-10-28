@@ -12,6 +12,22 @@ function getDaysDiff(fromUtcDateStr: string, toUtcDateStr: string): number {
   return Math.round((d2.getTime() - d1.getTime()) / 86400000);
 }
 
+/**
+ * Computes a chronologically ordered milestone timeline for an event.
+ *
+ * Capabilities:
+ * - Proportional schedule compression: Dynamically scales milestone offsets when actual lead time
+ *   is shorter than the recommended span, preventing deadlines from falling into the past.
+ * - Topological dependency resolution and critical path tagging.
+ * - Outdoor weather contingency inspection injection.
+ * - Phase grouping from initial planning to post-event settlement.
+ *
+ * @param eventDate - ISO format YYYY-MM-DD celebration date.
+ * @param todayDate - Current date reference (ISO YYYY-MM-DD).
+ * @param eventDef - Event archetype definition containing base task templates and dependencies.
+ * @param venueType - Venue classification ('indoor', 'outdoor', 'online').
+ * @returns A fully mapped `TimelinePlan` with scheduled dates, urgency badges, and phase groupings.
+ */
 export function computeTimelinePlan(
   eventDate: string,
   todayDate: string,

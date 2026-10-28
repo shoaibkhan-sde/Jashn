@@ -27,6 +27,13 @@ export interface EventPlanSimulation {
 
 /**
  * Simulates a proportional percentage budget cut while strictly preserving locked categories.
+ * Uses the Hare-Niemeyer largest-remainder method across unlocked categories to guarantee
+ * that allocations remain exact integers and sum precisely to the target distributable budget.
+ *
+ * @param budget - Current active budget plan.
+ * @param percentCut - Requested percentage budget cut (clamped between 1% and 50%).
+ * @param lockedCategoryIds - Array of category IDs exempt from reduction.
+ * @returns An `EventPlanSimulation` object comparing baseline vs simulated state.
  */
 export function simulatePlanBudgetCut(
   budget: BudgetPlan,
@@ -133,7 +140,14 @@ export function simulatePlanBudgetCut(
 }
 
 /**
- * Simulates scaling guest-sensitive variable categories (catering, hospitality, favors, invites).
+ * Simulates scaling guest-sensitive variable categories (catering, hospitality, favors, invites)
+ * when attendance expands or contracts, while keeping fixed overheads and locked categories constant.
+ *
+ * @param budget - Current active budget plan.
+ * @param currentGuests - Baseline guest count.
+ * @param guestDelta - Headcount difference (+N or -N).
+ * @param lockedCategoryIds - Array of category IDs exempt from scaling.
+ * @returns An `EventPlanSimulation` object with modified per-head budget projections.
  */
 export function simulatePlanGuestChange(
   budget: BudgetPlan,
@@ -202,7 +216,12 @@ export function simulatePlanGuestChange(
 }
 
 /**
- * Applies a simulation cleanly to a GeneratedEventPlan, updating the budget and readiness.
+ * Applies a simulation cleanly to a GeneratedEventPlan, updating the budget, category allocations,
+ * and recalculating variance status strings.
+ *
+ * @param plan - The original generated plan to mutate.
+ * @param simulation - The accepted simulation delta.
+ * @returns A fresh `GeneratedEventPlan` reflecting simulated amounts and updated timestamp.
  */
 export function applySimulationToPlan(
   plan: GeneratedEventPlan,

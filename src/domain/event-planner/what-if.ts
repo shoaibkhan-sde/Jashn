@@ -2,6 +2,15 @@ import { GeneratedEventPlan, WhatIfDiff } from './types';
 import { calculateBudgetSplit } from './budget-math';
 import { getEventDefinition } from './registry';
 
+/**
+ * Simulates a hypothetical what-if scenario adjusting both guest count and total budget.
+ * Recalculates category allocations and produces comparative deltas and plain-English notes.
+ *
+ * @param currentPlan - Active generated celebration plan.
+ * @param newGuestCount - Proposed guest count.
+ * @param newTotalBudget - Proposed new total budget.
+ * @returns A `WhatIfDiff` object containing before/after comparisons, or `null` if event type is unknown.
+ */
 export function simulateWhatIf(
   currentPlan: GeneratedEventPlan,
   newGuestCount: number,

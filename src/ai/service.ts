@@ -111,10 +111,11 @@ Always return valid JSON strictly matching the schema:
           },
         });
 
+        const rawResponse = response as { text?: string | (() => string) };
         const text =
-          typeof (response as any).text === 'function'
-            ? (response as any).text()
-            : response.text ?? '';
+          typeof rawResponse.text === 'function'
+            ? rawResponse.text()
+            : rawResponse.text ?? '';
         const parsedJson = JSON.parse(text);
         const validated = AssistantStructuredOutputSchema.safeParse(parsedJson);
 

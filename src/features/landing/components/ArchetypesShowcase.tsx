@@ -53,7 +53,7 @@ export const ArchetypesShowcase: React.FC = () => {
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#F5A524]/20 text-[#D78B13] dark:text-[#F5A524]">
                 Lead Time: {selectedDef.recommendedLeadDays} Days
               </span>
-              <span className="text-xs text-slate-400">
+              <span className="text-xs text-slate-500 dark:text-slate-400">
                 {selectedDef.allowAlcohol ? 'Bar provisions supported' : 'Alcohol excluded by default'}
               </span>
             </div>
@@ -68,13 +68,13 @@ export const ArchetypesShowcase: React.FC = () => {
             {/* Quick Spec Matrix */}
             <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
               <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
-                <span className="text-slate-400 block mb-0.5">Guest Capacity</span>
+                <span className="text-slate-500 dark:text-slate-400 block mb-0.5">Guest Capacity</span>
                 <strong className="text-slate-900 dark:text-white font-extrabold text-sm">
                   {selectedDef.minGuests} – {selectedDef.maxGuests.toLocaleString('en-IN')}
                 </strong>
               </div>
               <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
-                <span className="text-slate-400 block mb-0.5">Budget Range</span>
+                <span className="text-slate-500 dark:text-slate-400 block mb-0.5">Budget Range</span>
                 <strong className="text-emerald-600 dark:text-emerald-400 font-extrabold text-sm">
                   ₹{selectedDef.minBudget.toLocaleString('en-IN')} – ₹{selectedDef.maxBudget.toLocaleString('en-IN')}
                 </strong>

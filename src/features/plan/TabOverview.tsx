@@ -76,15 +76,15 @@ export const TabOverview: React.FC<TabOverviewProps> = ({
         {/* Breakdown Pills */}
         <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
           <div>
-            <span className="text-slate-400">Milestones:</span>{' '}
+            <span className="text-slate-500 dark:text-slate-400">Milestones:</span>{' '}
             <strong className="text-slate-800 dark:text-slate-200">{readiness.breakdown.taskScore}/45 pts</strong>
           </div>
           <div>
-            <span className="text-slate-400">Vendors:</span>{' '}
+            <span className="text-slate-500 dark:text-slate-400">Vendors:</span>{' '}
             <strong className="text-slate-800 dark:text-slate-200">{readiness.breakdown.vendorScore}/35 pts</strong>
           </div>
           <div>
-            <span className="text-slate-400">Budget Health:</span>{' '}
+            <span className="text-slate-500 dark:text-slate-400">Budget Health:</span>{' '}
             <strong className="text-slate-800 dark:text-slate-200">{readiness.breakdown.budgetScore}/20 pts</strong>
           </div>
         </div>

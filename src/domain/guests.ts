@@ -5,6 +5,14 @@
 
 import { GuestItem, GuestSummary, RsvpStatus } from './types';
 
+/**
+ * Aggregates RSVP metrics, taking plus-ones into account for total headcount,
+ * and derives real-time catering cost per confirmed attendee.
+ *
+ * @param guests - Full guest roster.
+ * @param totalBudget - Overall event budget.
+ * @returns A composite `GuestSummary` with counts and per-head cost.
+ */
 export function calculateGuestSummary(
   guests: GuestItem[],
   totalBudget: number
@@ -37,6 +45,14 @@ export function calculateGuestSummary(
   };
 }
 
+/**
+ * Updates an attendee's RSVP status.
+ *
+ * @param guests - Guest roster.
+ * @param guestId - Target guest ID.
+ * @param newStatus - New RSVP status ('confirmed', 'pending', 'declined').
+ * @returns Updated array of guests.
+ */
 export function updateGuestRsvp(
   guests: GuestItem[],
   guestId: string,
@@ -45,6 +61,13 @@ export function updateGuestRsvp(
   return guests.map((g) => (g.id === guestId ? { ...g, status: newStatus } : g));
 }
 
+/**
+ * Creates and appends a new guest entry with a unique ID and non-negative plus-ones.
+ *
+ * @param guests - Existing guest list.
+ * @param newGuest - Guest details without ID.
+ * @returns New guest list with appended attendee.
+ */
 export function addGuest(
   guests: GuestItem[],
   newGuest: Omit<GuestItem, 'id'>

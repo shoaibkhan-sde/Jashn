@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { planFromRequest } from '@/domain/event-planner/plan-builder';
 import { PlanRequestRaw, RankedIdea } from '@/domain/event-planner/types';
 import { sanitizeAndValidatePrompt } from '@/ai/security';
+import { apiRateLimiter } from '@/lib/rateLimit';
 import { GoogleGenAI } from '@google/genai';
 
 interface AiAssistRequestBody {
@@ -10,10 +11,40 @@ interface AiAssistRequestBody {
   question?: string;
 }
 
+const MAX_CACHE_ENTRIES = 200;
 const cache = new Map<string, { answer: string; extraIdeas?: RankedIdea[]; source: 'ai' | 'builtin'; timestamp: number }>();
 const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
+function setCachedItem(key: string, value: { answer: string; extraIdeas?: RankedIdea[]; source: 'ai' | 'builtin'; timestamp: number }) {
+  if (cache.size >= MAX_CACHE_ENTRIES) {
+    const oldestKey = cache.keys().next().value;
+    if (oldestKey) cache.delete(oldestKey);
+  }
+  cache.set(key, value);
+}
+
 export async function POST(req: NextRequest) {
+  // Rate limiting check
+  const ip =
+    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+    req.headers.get('x-real-ip') ||
+    '127.0.0.1';
+
+  const rateLimit = apiRateLimiter.check(ip);
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Too Many Requests: Please slow down.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil(rateLimit.resetMs / 1000)),
+          'X-RateLimit-Limit': String(rateLimit.limit),
+          'X-RateLimit-Remaining': '0',
+        },
+      }
+    );
+  }
+
   try {
     const rawText = await req.text();
     if (rawText.length > 50 * 1024) {
@@ -90,7 +121,7 @@ Please answer in 2-3 concise paragraphs of actionable, polite advice. Focus on v
         timestamp: Date.now(),
       };
 
-      cache.set(cacheKey, result);
+      setCachedItem(cacheKey, result);
       return NextResponse.json(result);
     } catch {
       // Failover to builtin deterministic fallback

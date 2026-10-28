@@ -121,7 +121,7 @@ export const Step1Basics: React.FC<Step1BasicsProps> = ({
               Between 2 and 80 characters.
             </p>
           )}
-          <span className="text-slate-400">{draft.eventName.length}/80</span>
+          <span className="text-slate-500 dark:text-slate-400 font-medium">{draft.eventName.length}/80</span>
         </div>
       </div>
 

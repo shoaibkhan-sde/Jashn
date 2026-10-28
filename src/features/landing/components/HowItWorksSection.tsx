@@ -67,7 +67,7 @@ export const HowItWorksSection: React.FC = () => {
               </p>
             </div>
 
-            <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-slate-400 group-hover:text-[#F5A524] transition-colors">
+            <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-slate-500 dark:text-slate-400 group-hover:text-[#F5A524] transition-colors">
               {idx < 2 ? 'Proceeds to Next →' : 'Plan Ready to Execute ✓'}
             </div>
           </div>

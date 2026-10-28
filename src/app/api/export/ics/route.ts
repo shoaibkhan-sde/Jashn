@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { apiRateLimiter } from '@/lib/rateLimit';
+
+const MAX_BODY_BYTES = 50 * 1024; // 50 KB limit
 
 const IcsExportSchema = z.object({
   title: z.string().default('Jashn Celebration Plan'),
@@ -19,6 +22,36 @@ function formatIcsDate(dateStr: string): string {
 }
 
 export async function POST(req: NextRequest) {
+  // Body size enforcement
+  const contentLength = Number(req.headers.get('content-length') || '0');
+  if (contentLength > MAX_BODY_BYTES) {
+    return NextResponse.json(
+      { error: 'Payload Too Large: Maximum allowed request size is 50KB.' },
+      { status: 413 }
+    );
+  }
+
+  // Rate limiting check
+  const ip =
+    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+    req.headers.get('x-real-ip') ||
+    '127.0.0.1';
+
+  const rateLimit = apiRateLimiter.check(ip);
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Too Many Requests: Please slow down.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil(rateLimit.resetMs / 1000)),
+          'X-RateLimit-Limit': String(rateLimit.limit),
+          'X-RateLimit-Remaining': '0',
+        },
+      }
+    );
+  }
+
   try {
     const body = await req.json();
     const validated = IcsExportSchema.safeParse(body);

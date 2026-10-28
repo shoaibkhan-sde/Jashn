@@ -1,5 +1,18 @@
 import { BudgetPlan, ReadinessScore, TimelinePlan, VendorPlan } from './types';
 
+/**
+ * Computes a weighted overall celebration readiness health score (0 to 100).
+ *
+ * Scoring Formula:
+ * - Milestone Tasks (Max 45 points): Critical path tasks carry 3x weight; points earned for completion.
+ * - Vendor Lock-in (Max 35 points): Essential vendors carry 3x weight; points awarded for contract progress.
+ * - Budget Health (Max 20 points): Full 20 points when within budget; proportional penalty for overspending.
+ *
+ * @param timeline - Current event timeline containing milestone tasks and status.
+ * @param vendors - Current vendor checklist with booking progress.
+ * @param budget - Budget plan with total and actual spent amounts.
+ * @returns A composite `ReadinessScore` containing numerical score, qualitative level, breakdown, and warnings.
+ */
 export function computeReadinessScore(
   timeline: TimelinePlan,
   vendors: VendorPlan,

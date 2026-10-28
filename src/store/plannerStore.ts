@@ -29,7 +29,9 @@ const persistChat = (msgs: ChatMessage[]) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('jashn.ai_chat_messages', JSON.stringify(msgs));
     }
-  } catch {}
+  } catch (err) {
+    console.warn('Unable to persist chat to localStorage:', err);
+  }
 };
 
 export const usePlannerStore = create<PlannerState>((set, get) => ({
@@ -44,7 +46,9 @@ export const usePlannerStore = create<PlannerState>((set, get) => ({
   setTheme: (theme) => {
     try {
       if (typeof window !== 'undefined') localStorage.setItem('jashn.theme', theme);
-    } catch {}
+    } catch (err) {
+      console.warn('Unable to persist theme to localStorage:', err);
+    }
     set({ theme });
   },
   setActiveTab: (activeTab) => set({ activeTab }),
@@ -56,7 +60,9 @@ export const usePlannerStore = create<PlannerState>((set, get) => ({
   resetChat: () => {
     try {
       if (typeof window !== 'undefined') localStorage.removeItem('jashn.ai_chat_messages');
-    } catch {}
+    } catch (err) {
+      console.warn('Unable to remove chat messages from localStorage:', err);
+    }
     set({ messages: INITIAL_MESSAGES });
   },
 
@@ -135,7 +141,9 @@ export const usePlannerStore = create<PlannerState>((set, get) => ({
               set({ plan: currentPlan });
             }
           }
-        } catch {}
+        } catch (err) {
+          console.warn('Failed to parse cached pure_event_plan:', err);
+        }
       }
 
       let res;
@@ -146,7 +154,8 @@ export const usePlannerStore = create<PlannerState>((set, get) => ({
           body: JSON.stringify({ message: trimmed, plan: currentPlan }),
         });
         res = r.ok ? await r.json() : await defaultAIService.askPlanner(trimmed, currentPlan);
-      } catch {
+      } catch (_fetchErr) {
+        // Fallback to deterministic client-side engine if API route is unreachable or offline
         res = await defaultAIService.askPlanner(trimmed, currentPlan);
       }
 

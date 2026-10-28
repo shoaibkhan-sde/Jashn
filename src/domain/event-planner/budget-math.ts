@@ -15,6 +15,22 @@ interface RawQuota {
   isPriority: boolean;
 }
 
+/**
+ * Calculates a mathematically exact budget allocation across event categories
+ * using the Hare-Niemeyer (Largest-Remainder) integer distribution method.
+ *
+ * Guarantees:
+ * - Exact mathematical integrity: Sum of all category allocations + contingency === totalBudget.
+ * - Dynamic tier adjustments (lean, standard, premium) and outdoor weather contingency surcharges.
+ * - Prioritized category weight boosting via the priority multiplier.
+ *
+ * @param totalBudget - Total available budget in integer currency units (e.g. INR rupees).
+ * @param eventDef - Canonical event archetype definition containing categories and base weights.
+ * @param tier - Budget tier ('lean', 'standard', 'premium').
+ * @param priorities - Category IDs selected as user priorities.
+ * @param venueType - Venue classification ('indoor', 'outdoor', 'online').
+ * @returns A complete `BudgetPlan` with integer allocations, percentages, and protected contingency.
+ */
 export function calculateBudgetSplit(
   totalBudget: number,
   eventDef: EventDefinition,

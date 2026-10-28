@@ -17,11 +17,24 @@ export const ALL_EXPENSE_CATEGORIES: ExpenseCategory[] = [
   'miscellaneous',
 ];
 
+/**
+ * Rounds a currency value to the nearest integer, handling non-finite numbers safely.
+ *
+ * @param amount - Raw numeric amount.
+ * @returns Integer rounded currency value.
+ */
 export function roundCurrency(amount: number): number {
   if (!Number.isFinite(amount)) return 0;
   return Math.round(amount);
 }
 
+/**
+ * Computes aggregated allocated and spent amounts per expense category.
+ *
+ * @param items - List of budget items.
+ * @param totalBudget - Overall total budget.
+ * @returns Array of `CategorySummary` objects with percentages of total and percentages spent.
+ */
 export function calculateCategoryTotals(
   items: BudgetItem[],
   totalBudget: number
@@ -64,6 +77,16 @@ export function calculateCategoryTotals(
   return summaries;
 }
 
+/**
+ * Aggregates budget financial metrics including total allocated, total spent,
+ * unallocated buffer, locked reserve, effective available, and cost per guest.
+ *
+ * @param totalBudget - Overall event budget.
+ * @param items - Array of individual budget items.
+ * @param guestCount - Total expected guests.
+ * @param reservePercentage - Contingency percentage reserve (default 5%).
+ * @returns Comprehensive `BudgetTotals` summary.
+ */
 export function calculateBudgetTotals(
   totalBudget: number,
   items: BudgetItem[],
@@ -102,6 +125,15 @@ export function calculateBudgetTotals(
   };
 }
 
+/**
+ * Rebalances category allocations to match a new total budget, preserving
+ * exact integer allocations and keeping specified categories strictly locked.
+ *
+ * @param currentItems - Current budget line items.
+ * @param newTotalBudget - New target overall budget.
+ * @param lockedCategories - Categories exempt from reduction/rebalancing.
+ * @returns Updated array of `BudgetItem` elements summing to the new target.
+ */
 export function rebalanceBudget(
   currentItems: BudgetItem[],
   newTotalBudget: number,

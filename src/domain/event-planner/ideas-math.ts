@@ -15,6 +15,22 @@ function normalizeTokens(text?: string | null): string[] {
     .filter((s) => s.length > 2);
 }
 
+/**
+ * Filters and ranks celebration ideas and concept starters based on user profile and constraints.
+ *
+ * Capabilities:
+ * - Constraint filtering: Enforces guest capacity limits (min/max), budget tier minimums, and venue compatibility.
+ * - Semantic keyword relevance scoring: Tokenizes theme and user interest inputs and computes a match score.
+ * - Deterministic fallback: Ensures high-value fallback concepts are surfaced even with sparse inputs.
+ *
+ * @param eventDef - Event archetype definition containing curated concepts and tags.
+ * @param guestCount - Number of attendees.
+ * @param tier - Budget tier ('lean', 'standard', 'premium').
+ * @param venueType - Venue classification ('indoor', 'outdoor', 'online').
+ * @param theme - Optional user-defined theme string (e.g. "Royal Heritage", "Retro Arcade").
+ * @param interests - List of selected user interest tags (e.g. ["Live Music", "Gourmet Food"]).
+ * @returns Ranked array of `RankedIdea` items sorted by descending relevance.
+ */
 export function rankAndFilterIdeas(
   eventDef: EventDefinition,
   guestCount: number,
